@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: CRUD-JPA
+  datasource:
+    url: jdbc:h2:mem:users_db
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true

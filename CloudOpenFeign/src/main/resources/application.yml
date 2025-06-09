@@ -1,0 +1,8 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: CloudOpenFeign
+fake-api:
+  name: fake-api
+  url: https://api.escuelajs.co/api/v1

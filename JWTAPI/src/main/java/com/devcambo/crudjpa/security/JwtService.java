@@ -8,23 +8,25 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class JwtService {
+
+  private final Environment env;
 
   public String generateJwtToken(Authentication authentication) {
     String jwt;
-    SecretKey secretKey = Keys.hmacShaKeyFor(
-      JwtConstant.JWT_SECRET.getBytes(StandardCharsets.UTF_8)
+    String secret = env.getProperty(
+      JwtConstant.JWT_SECRET,
+      JwtConstant.DEFAULT_JWT_SECRET
     );
+    SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     User fetchedUser = (User) authentication.getPrincipal();
-    log.info("Fetched User: {}", fetchedUser);
     jwt =
       Jwts
         .builder()

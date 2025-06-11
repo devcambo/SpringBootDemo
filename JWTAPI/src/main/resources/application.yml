@@ -3,33 +3,5 @@ server:
 spring:
   application:
     name: JWTAPI
-  datasource:
-    url: jdbc:mysql://localhost:3306/users_db
-    username: admin
-    password: admin
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-#  datasource:
-#    url: jdbc:h2:mem:users_db
-#    username: sa
-#    password:
-#    driverClassName: org.h2.Driver
-#  jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
-#  h2:
-#    console:
-#      enabled: true
-#  security:
-#    user:
-#      name: user
-#      password: "{noop}user"
-logging:
-  level:
-    org.springframework.security: TRACE
+  profiles:
+    active: dev

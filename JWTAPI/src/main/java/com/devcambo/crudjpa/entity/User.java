@@ -1,13 +1,12 @@
 package com.devcambo.crudjpa.entity;
 
 import jakarta.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -30,12 +29,11 @@ public class User extends BaseEntity {
   @Column(length = 100, nullable = false)
   private String password;
 
-
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
-          name = "user_roles",
-          joinColumns = @JoinColumn(name = "user_id"),
-          inverseJoinColumns = @JoinColumn(name = "role_id")
+    name = "user_roles",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id")
   )
   private Set<Role> roles = new LinkedHashSet<>();
 }

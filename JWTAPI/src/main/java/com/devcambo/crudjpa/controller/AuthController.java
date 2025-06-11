@@ -20,18 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthController {
 
-    private final AuthService authService;
+  private final AuthService authService;
 
-    @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegisterDto registerDto) {
-        log.info("Registering user: {}", registerDto.email());
-        return ResponseEntity.ok(authService.register(registerDto));
-    }
+  @PostMapping("/register")
+  public ResponseEntity<UserDto> registerUser(
+    @Valid @RequestBody RegisterDto registerDto
+  ) {
+    log.info("Registering user: {}", registerDto.email());
+    return ResponseEntity.ok(authService.register(registerDto));
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
-        log.info("Logging in user: {}", loginRequestDto.email());
-        return ResponseEntity.ok(authService.login(loginRequestDto));
-    }
-
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponseDto> loginUser(
+    @Valid @RequestBody LoginRequestDto loginRequestDto
+  ) {
+    log.info("Logging in user: {}", loginRequestDto.email());
+    return ResponseEntity.ok(authService.login(loginRequestDto));
+  }
 }

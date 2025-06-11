@@ -7,6 +7,6 @@ import com.devcambo.crudjpa.dto.user.UserDto;
 import jakarta.validation.Valid;
 
 public interface AuthService {
-    UserDto register(@Valid RegisterDto registerDto);
-    LoginResponseDto login(@Valid LoginRequestDto loginRequestDto);
+  UserDto register(@Valid RegisterDto registerDto);
+  LoginResponseDto login(@Valid LoginRequestDto loginRequestDto);
 }

@@ -4,4 +4,4 @@ spring:
   application:
     name: JWTAPI
   profiles:
-    active: prod
+    active: dev

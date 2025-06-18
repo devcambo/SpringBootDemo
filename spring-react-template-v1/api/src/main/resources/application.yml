@@ -1,0 +1,26 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api
+  datasource:
+    url: jdbc:mysql://localhost:3306/users_db
+    username: admin
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  cloud:
+    aws:
+      credentials:
+        access-key: "${AWS_ACCESS_KEY:000000000000}"
+        secret-key: "${AWS_SECRET_KEY:000000000000}"
+      s3:
+        region: "${AWS_REGION:us-east-1}"
+        endpoint: "${AWS_ENDPOINT:http://s3.localhost.localstack.cloud:4566}"

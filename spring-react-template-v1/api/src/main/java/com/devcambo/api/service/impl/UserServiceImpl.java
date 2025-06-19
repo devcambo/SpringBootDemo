@@ -39,7 +39,9 @@ public class UserServiceImpl implements UserService {
   public void create(UserRequestDto userRequestDto) {
     User user = UserMapper.mapToUser(userRequestDto);
     user.setPassword(encoder.encode(user.getPassword()));
-    roleRepository.findByName("ROLE_USER").ifPresent(role -> user.setRoles(Set.of(role)));
+    roleRepository
+      .findByName("ROLE_ADMIN")
+      .ifPresent(role -> user.setRoles(Set.of(role)));
     userRepository.save(user);
   }
 

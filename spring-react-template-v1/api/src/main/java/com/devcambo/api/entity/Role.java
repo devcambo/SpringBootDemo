@@ -8,8 +8,8 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity {

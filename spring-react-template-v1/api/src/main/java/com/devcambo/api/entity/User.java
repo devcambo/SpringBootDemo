@@ -3,17 +3,13 @@ package com.devcambo.api.entity;
 import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "users")
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "users")
 public class User extends BaseEntity {
 
   @Id

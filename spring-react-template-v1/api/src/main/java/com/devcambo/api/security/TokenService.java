@@ -1,6 +1,7 @@
 package com.devcambo.api.security;
 
 import com.devcambo.api.constant.AppConstants;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
@@ -27,6 +28,15 @@ public class TokenService {
       .claim("roles", roles)
       .signWith(getSecretKey())
       .compact();
+  }
+
+  public Claims getJwtClaims(String jwtToken) {
+    return Jwts
+      .parser()
+      .verifyWith(getSecretKey())
+      .build()
+      .parseSignedClaims(jwtToken)
+      .getPayload();
   }
 
   private SecretKey getSecretKey() {

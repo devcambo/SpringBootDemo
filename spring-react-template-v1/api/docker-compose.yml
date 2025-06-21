@@ -22,5 +22,11 @@ services:
       - "./localstack/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"  # ready hook
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog_container
+    ports:
+      - "1025:1025" # SMTP server port
+      - "8025:8025" # Web UI port
 volumes:
   mysql_data:

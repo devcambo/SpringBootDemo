@@ -4,18 +4,18 @@ spring:
   application:
     name: api
   datasource:
-    url: jdbc:mysql://localhost:3306/users_db
-    username: admin
-    password: admin
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/users_db}
+    username: ${DATABASE_USERNAME:admin}
+    password: ${DATABASE_PASSWORD:admin}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        use_sql_comments: true
   cloud:
     aws:
       credentials:
@@ -23,15 +23,20 @@ spring:
         secret-key: ${AWS_SECRET_KEY:000000000000}
       s3:
         region: ${AWS_REGION:us-east-1}
-        endpoint: ${AWS_ENDPOINT:http://s3.localhost.localstack.cloud:4566}
+#        endpoint: ${AWS_ENDPOINT:http://s3.localhost.localstack.cloud:4566}
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: portistadt@gmail.com
-    password: nhnfcpqzxiumwwlv
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:test}
+    password: ${MAIL_PASSWORD:test}
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${MAIL_SMTP_STARTTLS_ENABLE:false}
+
+reset-pwd-url: ${RESET_PWD_URL:http://localhost:5173}
+cors-allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+
 #logging:
 #  level:
 #    org.springframework.security: TRACE
+#http://my-bucket.s3.localhost.localstack.cloud:4566/b7640a08-3bf9-4f51-bcc3-252d485b2fbe.jpg

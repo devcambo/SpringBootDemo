@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +42,9 @@ public class AuthServiceImpl implements AuthService {
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final PasswordResetTokenRepository passwordResetTokenRepository;
+
+  @Value("${reset-pwd-url}")
+  private String resetPwdUrl;
 
   @Override
   public void register(RegisterRequestDto registerRequestDto) {
@@ -140,7 +144,8 @@ public class AuthServiceImpl implements AuthService {
     message.setSubject("Password Reset Request");
     message.setText(
       "Please click the link below to reset your password:\n" +
-      "http://localhost:8080/reset-password?token=" +
+      resetPwdUrl +
+      "/reset-password?token=" +
       token
     );
     javaMailSender.send(message);

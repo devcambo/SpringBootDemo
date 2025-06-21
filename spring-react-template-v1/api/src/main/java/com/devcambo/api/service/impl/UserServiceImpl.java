@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
   public void update(Long userId, UserUpdateDto userUpdateDto) {
     User existingUser = getUserById(userId);
     existingUser.setUsername(userUpdateDto.username());
+    existingUser.setProfilePicture(userUpdateDto.profileImageUrl());
     userRepository.save(existingUser);
   }
 

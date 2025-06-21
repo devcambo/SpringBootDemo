@@ -126,4 +126,19 @@ public class GlobalExceptionHandler {
     );
     return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(FileException.class)
+  public ResponseEntity<ErrorResponseDto> handleFileException(
+    FileException exception,
+    WebRequest webRequest
+  ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.BAD_REQUEST,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+  }
 }

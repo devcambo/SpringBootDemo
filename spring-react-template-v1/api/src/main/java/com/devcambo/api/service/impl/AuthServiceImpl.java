@@ -6,7 +6,7 @@ import com.devcambo.api.dto.auth.RegisterRequestDto;
 import com.devcambo.api.entity.User;
 import com.devcambo.api.repository.RoleRepository;
 import com.devcambo.api.repository.UserRepository;
-import com.devcambo.api.security.TokenService;
+import com.devcambo.api.security.jwt.TokenService;
 import com.devcambo.api.service.AuthService;
 import java.util.Set;
 import java.util.stream.Collectors;

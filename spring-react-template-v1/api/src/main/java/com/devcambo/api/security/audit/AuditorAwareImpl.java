@@ -1,4 +1,4 @@
-package com.devcambo.api.security;
+package com.devcambo.api.security.audit;
 
 import java.util.Optional;
 import org.springframework.data.domain.AuditorAware;

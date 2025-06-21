@@ -1,4 +1,4 @@
-package com.devcambo.api.security;
+package com.devcambo.api.security.jwt;
 
 import com.devcambo.api.constant.AppConstants;
 import io.jsonwebtoken.Claims;

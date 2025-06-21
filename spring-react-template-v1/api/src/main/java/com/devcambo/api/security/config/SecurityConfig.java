@@ -1,5 +1,8 @@
-package com.devcambo.api.security;
+package com.devcambo.api.security.config;
 
+import com.devcambo.api.security.exp.CustomAccessDeniedHandler;
+import com.devcambo.api.security.exp.CustomAuthenticationEntryPoint;
+import com.devcambo.api.security.jwt.JWTTokenValidatorFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +31,8 @@ public class SecurityConfig {
         auth
           .requestMatchers("/api/v1/auth/**")
           .permitAll()
-          .requestMatchers("/api/v1/users/**")
-          .hasRole("USER")
+          .requestMatchers("/api/v1/admin/**")
+          .hasRole("ADMIN")
           .anyRequest()
           .authenticated()
       )

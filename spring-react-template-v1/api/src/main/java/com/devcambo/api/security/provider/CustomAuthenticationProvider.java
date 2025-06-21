@@ -1,4 +1,4 @@
-package com.devcambo.api.security;
+package com.devcambo.api.security.provider;
 
 import com.devcambo.api.entity.Role;
 import com.devcambo.api.entity.User;

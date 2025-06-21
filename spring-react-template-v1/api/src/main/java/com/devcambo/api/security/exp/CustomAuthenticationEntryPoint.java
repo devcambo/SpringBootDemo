@@ -1,14 +1,16 @@
-package com.devcambo.api.security;
+package com.devcambo.api.security.exp;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
+@Slf4j
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
   @Override
@@ -17,20 +19,19 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     HttpServletResponse response,
     AuthenticationException authException
   ) throws IOException, ServletException {
-    LocalDateTime currentTimeStamp = LocalDateTime.now();
     String message = (authException != null && authException.getMessage() != null)
       ? authException.getMessage()
       : "Unauthorized";
-    String path = request.getRequestURI();
+    log.error("An exception occurred due to : {}", message);
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
     response.setContentType("application/json;charset=UTF-8");
     String jsonResponse = String.format(
       "{\"timestamp\": \"%s\", \"status\": %d, \"error\": \"%s\", \"message\": \"%s\", \"path\": \"%s\"}",
-      currentTimeStamp,
+      LocalDateTime.now(),
       HttpStatus.UNAUTHORIZED.value(),
       HttpStatus.UNAUTHORIZED.getReasonPhrase(),
       message,
-      path
+      request.getRequestURI()
     );
     response.getWriter().write(jsonResponse);
   }

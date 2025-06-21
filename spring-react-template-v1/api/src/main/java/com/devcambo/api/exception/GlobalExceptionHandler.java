@@ -72,6 +72,7 @@ public class GlobalExceptionHandler {
     ResourceNotFoundException exception,
     WebRequest webRequest
   ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
     ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
       webRequest.getDescription(false),
       HttpStatus.NOT_FOUND,
@@ -86,6 +87,7 @@ public class GlobalExceptionHandler {
     UsernameNotFoundException exception,
     WebRequest webRequest
   ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
     ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
       webRequest.getDescription(false),
       HttpStatus.UNAUTHORIZED,
@@ -100,6 +102,7 @@ public class GlobalExceptionHandler {
     BadCredentialsException exception,
     WebRequest webRequest
   ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
     ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
       webRequest.getDescription(false),
       HttpStatus.UNAUTHORIZED,

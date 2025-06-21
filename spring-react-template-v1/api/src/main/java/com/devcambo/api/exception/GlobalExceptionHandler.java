@@ -111,4 +111,19 @@ public class GlobalExceptionHandler {
     );
     return new ResponseEntity<>(errorResponseDTO, HttpStatus.UNAUTHORIZED);
   }
+
+  @ExceptionHandler(PasswordChangeIllegalArgumentException.class)
+  public ResponseEntity<ErrorResponseDto> handlePasswordChangeIllegalArgumentException(
+    PasswordChangeIllegalArgumentException exception,
+    WebRequest webRequest
+  ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
+    ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.BAD_REQUEST,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+  }
 }

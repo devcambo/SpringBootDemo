@@ -1,5 +1,6 @@
 package com.devcambo.api.service;
 
+import com.devcambo.api.dto.user.ChangePwdReqDto;
 import com.devcambo.api.dto.user.UserRequestDto;
 import com.devcambo.api.dto.user.UserResponseDto;
 import com.devcambo.api.dto.user.UserUpdateDto;
@@ -13,4 +14,5 @@ public interface UserService {
   void update(Long userId, UserUpdateDto userUpdateDto);
   void delete(Long userId);
   UserResponseDto getCurrentUser(String email);
+  void updatePassword(Long userId, ChangePwdReqDto changePwdReqDto);
 }

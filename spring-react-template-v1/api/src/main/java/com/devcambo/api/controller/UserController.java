@@ -1,5 +1,6 @@
 package com.devcambo.api.controller;
 
+import com.devcambo.api.dto.user.ChangePwdReqDto;
 import com.devcambo.api.dto.user.UserRequestDto;
 import com.devcambo.api.dto.user.UserResponseDto;
 import com.devcambo.api.dto.user.UserUpdateDto;
@@ -72,5 +73,15 @@ public class UserController {
   public ResponseEntity<UserResponseDto> getCurrentUser(Authentication authentication) {
     log.info("Fetching current user: {}", authentication.getName());
     return ResponseEntity.ok(userService.getCurrentUser(authentication.getName()));
+  }
+
+  @PatchMapping("/{userId}/password")
+  public ResponseEntity<Void> updateUserPassword(
+    @PathVariable Long userId,
+    @Valid @RequestBody ChangePwdReqDto changePwdReqDto
+  ) {
+    log.info("Updating password for user with id: {}", userId);
+    userService.updatePassword(userId, changePwdReqDto);
+    return ResponseEntity.ok().build();
   }
 }

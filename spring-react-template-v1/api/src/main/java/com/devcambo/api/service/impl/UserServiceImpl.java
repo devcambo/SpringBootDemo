@@ -1,9 +1,11 @@
 package com.devcambo.api.service.impl;
 
+import com.devcambo.api.dto.user.ChangePwdReqDto;
 import com.devcambo.api.dto.user.UserRequestDto;
 import com.devcambo.api.dto.user.UserResponseDto;
 import com.devcambo.api.dto.user.UserUpdateDto;
 import com.devcambo.api.entity.User;
+import com.devcambo.api.exception.PasswordChangeIllegalArgumentException;
 import com.devcambo.api.exception.ResourceNotFoundException;
 import com.devcambo.api.mapper.UserMapper;
 import com.devcambo.api.repository.RoleRepository;
@@ -13,6 +15,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +67,21 @@ public class UserServiceImpl implements UserService {
       .findByEmail(email)
       .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
     return UserMapper.mapToUserDto(user);
+  }
+
+  @Override
+  public void updatePassword(Long userId, ChangePwdReqDto changePwdReqDto) {
+    User user = getUserById(userId);
+    if (!encoder.matches(changePwdReqDto.oldPassword(), user.getPassword())) {
+      throw new BadCredentialsException("Old password is incorrect!");
+    }
+    if (!changePwdReqDto.newPassword().equals(changePwdReqDto.confirmNewPassword())) {
+      throw new PasswordChangeIllegalArgumentException(
+        "New password and confirm new password do not match!"
+      );
+    }
+    user.setPassword(encoder.encode(changePwdReqDto.newPassword()));
+    userRepository.save(user);
   }
 
   private User getUserById(Long userId) {

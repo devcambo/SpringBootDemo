@@ -58,6 +58,14 @@ public class UserServiceImpl implements UserService {
     userRepository.deleteById(userId);
   }
 
+  @Override
+  public UserResponseDto getCurrentUser(String email) {
+    User user = userRepository
+      .findByEmail(email)
+      .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+    return UserMapper.mapToUserDto(user);
+  }
+
   private User getUserById(Long userId) {
     return userRepository
       .findById(userId)

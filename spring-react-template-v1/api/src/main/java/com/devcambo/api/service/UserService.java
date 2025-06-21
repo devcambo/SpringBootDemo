@@ -12,4 +12,5 @@ public interface UserService {
   void create(UserRequestDto userRequestDto);
   void update(Long userId, UserUpdateDto userUpdateDto);
   void delete(Long userId);
+  UserResponseDto getCurrentUser(String email);
 }

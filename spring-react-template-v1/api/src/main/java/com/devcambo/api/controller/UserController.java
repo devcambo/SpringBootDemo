@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -65,5 +66,11 @@ public class UserController {
     log.info("Deleting user with id: {}", userId);
     userService.delete(userId);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/me")
+  public ResponseEntity<UserResponseDto> getCurrentUser(Authentication authentication) {
+    log.info("Fetching current user: {}", authentication.getName());
+    return ResponseEntity.ok(userService.getCurrentUser(authentication.getName()));
   }
 }

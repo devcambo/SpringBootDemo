@@ -19,11 +19,19 @@ spring:
   cloud:
     aws:
       credentials:
-        access-key: "${AWS_ACCESS_KEY:000000000000}"
-        secret-key: "${AWS_SECRET_KEY:000000000000}"
+        access-key: ${AWS_ACCESS_KEY:000000000000}
+        secret-key: ${AWS_SECRET_KEY:000000000000}
       s3:
-        region: "${AWS_REGION:us-east-1}"
-        endpoint: "${AWS_ENDPOINT:http://s3.localhost.localstack.cloud:4566}"
+        region: ${AWS_REGION:us-east-1}
+        endpoint: ${AWS_ENDPOINT:http://s3.localhost.localstack.cloud:4566}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: portistadt@gmail.com
+    password: nhnfcpqzxiumwwlv
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
 #logging:
 #  level:
 #    org.springframework.security: TRACE

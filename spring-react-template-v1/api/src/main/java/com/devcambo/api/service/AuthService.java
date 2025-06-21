@@ -7,4 +7,6 @@ import com.devcambo.api.dto.auth.RegisterRequestDto;
 public interface AuthService {
   void register(RegisterRequestDto registerRequestDto);
   LoginResponseDto login(LoginRequestDto loginRequestDto);
+  void createPasswordResetToken(String email);
+  void resetPassword(String token, String newPassword);
 }

@@ -25,7 +25,13 @@ public class SecurityConfig {
     throws Exception {
     return http
       .authorizeHttpRequests(auth ->
-        auth.requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated()
+        auth
+          .requestMatchers("/api/v1/auth/**")
+          .permitAll()
+          .requestMatchers("/api/v1/users/**")
+          .hasRole("USER")
+          .anyRequest()
+          .authenticated()
       )
       .addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class)
       .csrf(AbstractHttpConfigurer::disable)
@@ -37,7 +43,9 @@ public class SecurityConfig {
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       )
       .exceptionHandling(ex ->
-        ex.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+        ex
+          .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+          .accessDeniedHandler(new CustomAccessDeniedHandler())
       )
       .build();
   }

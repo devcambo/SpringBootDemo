@@ -1,0 +1,10 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: backend-api
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/users_db}
+    username: ${DATABASE_USERNAME:admin}
+    password: ${DATABASE_PASSWORD:admin}
+    driver-class-name: com.mysql.cj.jdbc.Driver

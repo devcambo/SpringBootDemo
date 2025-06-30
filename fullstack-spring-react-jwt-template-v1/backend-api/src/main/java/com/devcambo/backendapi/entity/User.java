@@ -15,7 +15,7 @@ public class User extends BaseEntity {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(length = 100, nullable = false, unique = true)
+  @Column(length = 100, nullable = false)
   private String username;
 
   @Column(length = 100, nullable = false, unique = true)

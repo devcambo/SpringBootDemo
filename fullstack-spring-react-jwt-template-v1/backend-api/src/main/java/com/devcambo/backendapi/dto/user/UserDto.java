@@ -1,4 +1,4 @@
-package com.devcambo.backendapi.dto;
+package com.devcambo.backendapi.dto.user;
 
 import java.time.Instant;
 

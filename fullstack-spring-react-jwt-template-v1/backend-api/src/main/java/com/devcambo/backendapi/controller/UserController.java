@@ -1,8 +1,8 @@
 package com.devcambo.backendapi.controller;
 
-import com.devcambo.backendapi.dto.UserCreateDto;
-import com.devcambo.backendapi.dto.UserDto;
-import com.devcambo.backendapi.dto.UserUpdateDto;
+import com.devcambo.backendapi.dto.user.UserCreateDto;
+import com.devcambo.backendapi.dto.user.UserDto;
+import com.devcambo.backendapi.dto.user.UserUpdateDto;
 import com.devcambo.backendapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

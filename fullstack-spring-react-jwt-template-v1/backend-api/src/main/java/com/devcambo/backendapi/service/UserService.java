@@ -1,8 +1,8 @@
 package com.devcambo.backendapi.service;
 
-import com.devcambo.backendapi.dto.UserCreateDto;
-import com.devcambo.backendapi.dto.UserDto;
-import com.devcambo.backendapi.dto.UserUpdateDto;
+import com.devcambo.backendapi.dto.user.UserCreateDto;
+import com.devcambo.backendapi.dto.user.UserDto;
+import com.devcambo.backendapi.dto.user.UserUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

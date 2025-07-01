@@ -1,8 +1,8 @@
 package com.devcambo.backendapi.service.impl;
 
-import com.devcambo.backendapi.dto.UserCreateDto;
-import com.devcambo.backendapi.dto.UserDto;
-import com.devcambo.backendapi.dto.UserUpdateDto;
+import com.devcambo.backendapi.dto.user.UserCreateDto;
+import com.devcambo.backendapi.dto.user.UserDto;
+import com.devcambo.backendapi.dto.user.UserUpdateDto;
 import com.devcambo.backendapi.entity.User;
 import com.devcambo.backendapi.exception.ResourceNotFoundException;
 import com.devcambo.backendapi.mapper.UserMapper;
@@ -11,12 +11,14 @@ import com.devcambo.backendapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+  private final PasswordEncoder encoder;
   private final UserRepository userRepository;
 
   @Override
@@ -32,7 +34,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void create(UserCreateDto userCreateDto) {
-    userRepository.save(UserMapper.mapToUser(userCreateDto));
+    User user = UserMapper.mapToUser(userCreateDto);
+    user.setPassword(encoder.encode(userCreateDto.password()));
+    userRepository.save(user);
   }
 
   @Override

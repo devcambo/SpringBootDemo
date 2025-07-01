@@ -8,3 +8,13 @@ spring:
     username: ${DATABASE_USERNAME:admin}
     password: ${DATABASE_PASSWORD:admin}
     driver-class-name: com.mysql.cj.jdbc.Driver
+app:
+  jwt:
+    secret: ${JWT_SECRET:cb10cf780d219b7cdc2ea6467953f195}
+    expiration:
+      minutes: ${JWT_EXPIRATION_MINUTES:60}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+#logging:
+#  level:
+#    org.springframework.security: TRACE

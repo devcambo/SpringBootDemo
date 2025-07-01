@@ -1,7 +1,7 @@
 package com.devcambo.backendapi.mapper;
 
-import com.devcambo.backendapi.dto.UserCreateDto;
-import com.devcambo.backendapi.dto.UserDto;
+import com.devcambo.backendapi.dto.user.UserCreateDto;
+import com.devcambo.backendapi.dto.user.UserDto;
 import com.devcambo.backendapi.entity.User;
 
 public class UserMapper {

@@ -26,7 +26,7 @@ public class UserController {
   public ResponseEntity<Page<UserDto>> findAllUsers(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
-    @RequestParam(defaultValue = "userId") String sortBy,
+    @RequestParam(defaultValue = "id") String sortBy,
     @RequestParam(defaultValue = "true") boolean ascending
   ) {
     log.info("Fetching all users");

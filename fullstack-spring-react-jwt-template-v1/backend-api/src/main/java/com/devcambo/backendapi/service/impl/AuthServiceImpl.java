@@ -7,10 +7,12 @@ import com.devcambo.backendapi.entity.User;
 import com.devcambo.backendapi.repository.UserRepository;
 import com.devcambo.backendapi.security.TokenProvider;
 import com.devcambo.backendapi.service.AuthService;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +40,13 @@ public class AuthServiceImpl implements AuthService {
     Authentication authentication = authenticationManager.authenticate(
       new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.password())
     );
-    var token = tokenProvider.generateToken(
-      authentication.getName(),
-      authentication.getAuthorities().toString()
-    );
+    String subject = authentication.getName();
+    String roles = authentication
+      .getAuthorities()
+      .stream()
+      .map(GrantedAuthority::getAuthority)
+      .collect(Collectors.joining(","));
+    String token = tokenProvider.generateToken(subject, roles);
     return new TokenDto(token);
   }
 }

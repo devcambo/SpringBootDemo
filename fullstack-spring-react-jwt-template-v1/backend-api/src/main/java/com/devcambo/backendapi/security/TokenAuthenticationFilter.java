@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,7 +24,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
+  private final AntPathMatcher pathMatcher = new AntPathMatcher();
   private final TokenProvider tokenProvider;
+  private final List<String> publicPaths;
 
   @Override
   protected void doFilterInternal(
@@ -31,6 +35,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     FilterChain filterChain
   ) throws ServletException, IOException {
     try {
+      log.info("Filtering request");
       getJwtFromRequest(request)
         .flatMap(tokenProvider::validateTokenAndGetJws)
         .ifPresent(jws -> {
@@ -63,5 +68,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
       return Optional.of(tokenHeader.replace(AppConstants.TOKEN_PREFIX, ""));
     }
     return Optional.empty();
+  }
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    String path = request.getRequestURI();
+    return publicPaths
+      .stream()
+      .anyMatch(publicPath -> pathMatcher.match(publicPath, path));
   }
 }

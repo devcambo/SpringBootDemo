@@ -1,5 +1,6 @@
 package com.devcambo.backendapi.security;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.List;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -24,9 +23,10 @@ public class SecurityConfig {
 
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests(requests ->
-      requests.requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated()
-    );
+    http.authorizeHttpRequests(req -> {
+      publicPaths.forEach(path -> req.requestMatchers(path).permitAll());
+      req.anyRequest().authenticated();
+    });
     http.addFilterBefore(
       tokenAuthenticationFilter,
       UsernamePasswordAuthenticationFilter.class

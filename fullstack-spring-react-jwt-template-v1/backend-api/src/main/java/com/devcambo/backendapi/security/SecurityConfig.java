@@ -1,5 +1,7 @@
 package com.devcambo.backendapi.security;
 
+import com.devcambo.backendapi.exception.CustomAccessDeniedHandler;
+import com.devcambo.backendapi.exception.CustomAuthenticationEntryPoint;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,7 @@ public class SecurityConfig {
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(req -> {
       publicPaths.forEach(path -> req.requestMatchers(path).permitAll());
+      req.requestMatchers("/api/v1/users/**").hasAuthority("MANAGER");
       req.anyRequest().authenticated();
     });
     http.addFilterBefore(
@@ -36,6 +39,11 @@ public class SecurityConfig {
     http.logout(AbstractHttpConfigurer::disable);
     http.rememberMe(AbstractHttpConfigurer::disable);
     http.httpBasic(AbstractHttpConfigurer::disable);
+    http.exceptionHandling(exp ->
+      exp
+        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+        .accessDeniedHandler(new CustomAccessDeniedHandler())
+    );
     http.sessionManagement(session ->
       session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     );

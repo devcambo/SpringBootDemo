@@ -48,11 +48,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
           );
           authentication.setDetails(
             new WebAuthenticationDetailsSource().buildDetails(request)
-          ); // Optional setting
+          );
           SecurityContextHolder.getContext().setAuthentication(authentication);
         });
     } catch (Exception ex) {
-      // TODO: Handle error
       log.error("Cannot set user authentication", ex);
     }
     filterChain.doFilter(request, response);

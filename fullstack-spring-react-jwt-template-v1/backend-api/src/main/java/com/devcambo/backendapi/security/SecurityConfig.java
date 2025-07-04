@@ -27,7 +27,6 @@ public class SecurityConfig {
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(req -> {
       publicPaths.forEach(path -> req.requestMatchers(path).permitAll());
-      req.requestMatchers("/api/v1/users/**").hasAuthority("MANAGER");
       req.anyRequest().authenticated();
     });
     http.addFilterBefore(

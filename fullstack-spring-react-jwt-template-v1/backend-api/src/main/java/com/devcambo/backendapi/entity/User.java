@@ -15,15 +15,19 @@ public class User extends BaseEntity {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(length = 100, nullable = false)
+  @Column(name = "username", length = 100, nullable = false)
   private String username;
 
-  @Column(length = 100, nullable = false, unique = true)
+  @Column(name = "email", length = 100, nullable = false, unique = true)
   private String email;
 
-  @Column(length = 100, nullable = false)
+  @Column(name = "password", length = 100, nullable = false)
   private String password;
 
-  @Column(length = 30, nullable = false)
+  @Column(name = "roles", length = 30, nullable = false)
   private String roles;
+
+  @OneToOne
+  @JoinColumn(name = "pwd_reset_token_id", referencedColumnName = "id")
+  private PwdResetToken passwordResetToken;
 }

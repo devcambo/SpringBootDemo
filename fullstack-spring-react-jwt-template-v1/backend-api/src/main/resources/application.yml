@@ -8,6 +8,22 @@ spring:
     username: ${DATABASE_USERNAME:admin}
     password: ${DATABASE_PASSWORD:admin}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:test}
+    password: ${MAIL_PASSWORD:test}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 app:
   jwt:
     secret: ${JWT_SECRET:cb10cf780d219b7cdc2ea6467953f195}

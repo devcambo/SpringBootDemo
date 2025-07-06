@@ -27,7 +27,7 @@ public class User extends BaseEntity {
   @Column(name = "roles", length = 30, nullable = false)
   private String roles;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "pwd_reset_token_id", referencedColumnName = "id")
   private PwdResetToken passwordResetToken;
 }

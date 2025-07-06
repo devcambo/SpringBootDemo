@@ -33,6 +33,36 @@ public class GlobalExceptionHandler {
     return ResponseEntity.badRequest().body(errors);
   }
 
+  @ExceptionHandler(TokenExpiredException.class)
+  public ResponseEntity<ErrorResponseDto> handleTokenExpiredException(
+    TokenExpiredException exception,
+    WebRequest webRequest
+  ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
+    ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.BAD_REQUEST,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(PasswordChangeIllegalArgumentException.class)
+  public ResponseEntity<ErrorResponseDto> handlePasswordChangeIllegalArgumentException(
+    PasswordChangeIllegalArgumentException exception,
+    WebRequest webRequest
+  ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
+    ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.BAD_REQUEST,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(UsernameNotFoundException.class)
   public ResponseEntity<ErrorResponseDto> handleUsernameNotFoundException(
     UsernameNotFoundException exception,
@@ -76,6 +106,36 @@ public class GlobalExceptionHandler {
       LocalDateTime.now()
     );
     return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(CustomNoSuchAlgorithmException.class)
+  public ResponseEntity<ErrorResponseDto> handleCustomNoSuchAlgorithmException(
+    CustomNoSuchAlgorithmException exception,
+    WebRequest webRequest
+  ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
+    ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(CustomMailException.class)
+  public ResponseEntity<ErrorResponseDto> handleCustomMailException(
+    CustomMailException exception,
+    WebRequest webRequest
+  ) {
+    log.error("An exception occurred due to : {}", exception.getMessage());
+    ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(Exception.class)

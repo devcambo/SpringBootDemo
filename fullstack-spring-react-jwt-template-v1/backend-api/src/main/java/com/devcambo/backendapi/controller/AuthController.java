@@ -1,17 +1,12 @@
 package com.devcambo.backendapi.controller;
 
-import com.devcambo.backendapi.dto.auth.LoginDto;
-import com.devcambo.backendapi.dto.auth.RegisterDto;
-import com.devcambo.backendapi.dto.auth.TokenDto;
+import com.devcambo.backendapi.dto.auth.*;
 import com.devcambo.backendapi.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -32,5 +27,23 @@ public class AuthController {
   public ResponseEntity<TokenDto> loginUser(@Valid @RequestBody LoginDto loginDto) {
     log.info("Logging in user: {}", loginDto.email());
     return ResponseEntity.ok(authService.login(loginDto));
+  }
+
+  @PostMapping("/forgot-password")
+  public ResponseEntity<Void> forgotPasswordUser(
+    @Valid @RequestBody ForgotPwdDto forgotPwdDto
+  ) {
+    log.info("Forgot password: {}", forgotPwdDto.email());
+    authService.forgotPassword(forgotPwdDto);
+    return ResponseEntity.ok().build();
+  }
+
+  @PatchMapping("/reset-password")
+  public ResponseEntity<Void> resetPasswordUser(
+    @RequestParam(name = "token") String token,
+    @Valid @RequestBody ResetPwdDto resetPwdDto
+  ) {
+    authService.resetPassword(token, resetPwdDto);
+    return ResponseEntity.ok().build();
   }
 }

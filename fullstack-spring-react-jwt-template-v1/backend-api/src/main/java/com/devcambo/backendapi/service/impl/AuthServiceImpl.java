@@ -72,12 +72,6 @@ public class AuthServiceImpl implements AuthService {
     return new TokenDto(token);
   }
 
-  /*
-   * 1. User enter email
-   * 2. Check email exist or not
-   * 3. Create a token for user in store in db
-   * 4. Send a reset link via an email
-   * */
   @Transactional
   @Override
   public void forgotPassword(ForgotPwdDto forgotPwdDto) {
@@ -87,41 +81,28 @@ public class AuthServiceImpl implements AuthService {
 
     Instant now = Instant.now();
     String token = generateToken(64);
-
     PwdResetToken pwdResetToken = new PwdResetToken();
     pwdResetToken.setToken(tokenHasher(token));
     pwdResetToken.setTokenExpiry(now.plus(1, ChronoUnit.MINUTES));
-
     user.setPasswordResetToken(pwdResetToken);
-    userRepository.save(user); // we use CascadeType.ALL - so everytime the User has operations it will automatically apply to PwdResetToken
+    userRepository.save(user);
 
-    emailService.send(
-      user.getEmail(),
-      "Reset password link",
-      String.format("%s/reset-password?token=%s", allowedOrigins.getFirst(), token) // http://localhost:5173/reset-password?token=abc
+    String resetPwdLink = String.format(
+      "%s/reset-password?token=%s",
+      allowedOrigins.getFirst(),
+      token
     );
-    log.info(
-      "Reset password link generated {}",
-      String.format("%s/reset-password?token=%s", allowedOrigins.getFirst(), token)
-    );
-    log.info("Token {}", token);
+    emailService.send(user.getEmail(), "Reset password link", resetPwdLink);
+    log.info("Reset password link generated: {}", resetPwdLink);
   }
 
-  /*
-   * 1. Check token is existing or not
-   * 2. Check token is expired or not
-   * 3. Check newPwd and confirmPwd match or not
-   * 4. Update newPwd
-   * */
   @Override
   public void resetPassword(String token, ResetPwdDto resetPwdDto) {
     PwdResetToken pwdResetToken = pwdResetTokenRepository
       .findByToken(tokenHasher(token))
       .orElseThrow(() -> new ResourceNotFoundException("Token not found!"));
 
-    boolean checkExpr = isTokenNotExpired(pwdResetToken.getTokenExpiry());
-    log.info("Reset password expired: {}", checkExpr);
-    if (!checkExpr) {
+    if (isTokenExpired(pwdResetToken.getTokenExpiry())) {
       throw new TokenExpiredException("Token is expired!");
     }
 
@@ -163,8 +144,8 @@ public class AuthServiceImpl implements AuthService {
     return sb.toString();
   }
 
-  private static boolean isTokenNotExpired(final Instant tokenExpiry) {
+  private static boolean isTokenExpired(final Instant tokenExpiry) {
     Instant now = Instant.now();
-    return tokenExpiry.isAfter(now);
+    return tokenExpiry.isBefore(now); // 10.30 isBefore 10.20 -> false
   }
 }

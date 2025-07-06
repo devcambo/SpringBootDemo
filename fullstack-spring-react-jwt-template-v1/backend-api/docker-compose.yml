@@ -24,5 +24,13 @@ services:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog_container
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
 volumes:
   mysql_data:

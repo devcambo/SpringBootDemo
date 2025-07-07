@@ -1,5 +1,6 @@
 package com.devcambo.backendapi.service.impl;
 
+import com.devcambo.backendapi.dto.user.ProfileDto;
 import com.devcambo.backendapi.dto.user.UserCreateDto;
 import com.devcambo.backendapi.dto.user.UserDto;
 import com.devcambo.backendapi.dto.user.UserUpdateDto;
@@ -11,6 +12,8 @@ import com.devcambo.backendapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +52,24 @@ public class UserServiceImpl implements UserService {
   @Override
   public void delete(Long userId) {
     userRepository.delete(getUserById(userId));
+  }
+
+  @Override
+  public ProfileDto findProfile() {
+    Authentication authentication = SecurityContextHolder
+      .getContext()
+      .getAuthentication();
+    User user = userRepository
+      .findByEmail(authentication.getName())
+      .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+    return new ProfileDto(
+      user.getId(),
+      user.getUsername(),
+      user.getEmail(),
+      user.getRoles(),
+      user.getCreatedAt(),
+      user.getUpdatedAt()
+    );
   }
 
   private User getUserById(Long userId) {

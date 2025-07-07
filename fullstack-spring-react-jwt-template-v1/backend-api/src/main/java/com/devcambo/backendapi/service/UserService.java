@@ -1,5 +1,6 @@
 package com.devcambo.backendapi.service;
 
+import com.devcambo.backendapi.dto.user.ProfileDto;
 import com.devcambo.backendapi.dto.user.UserCreateDto;
 import com.devcambo.backendapi.dto.user.UserDto;
 import com.devcambo.backendapi.dto.user.UserUpdateDto;
@@ -12,4 +13,5 @@ public interface UserService {
   void create(UserCreateDto userCreateDto);
   void update(Long userId, UserUpdateDto userUpdateDto);
   void delete(Long userId);
+  ProfileDto findProfile();
 }

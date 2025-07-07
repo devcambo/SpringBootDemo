@@ -1,5 +1,6 @@
 package com.devcambo.backendapi.controller;
 
+import com.devcambo.backendapi.dto.user.ProfileDto;
 import com.devcambo.backendapi.dto.user.UserCreateDto;
 import com.devcambo.backendapi.dto.user.UserDto;
 import com.devcambo.backendapi.dto.user.UserUpdateDto;
@@ -65,5 +66,11 @@ public class UserController {
     log.info("Deleting user with id: {}", userId);
     userService.delete(userId);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/me")
+  public ResponseEntity<ProfileDto> findUserProfile() {
+    log.info("Fetching user profile");
+    return ResponseEntity.ok(userService.findProfile());
   }
 }

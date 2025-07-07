@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,6 +53,7 @@ public class UserController {
   }
 
   @PutMapping("/{userId}")
+  @PreAuthorize("@userServiceImpl.isOwner(#userId, authentication.name)")
   public ResponseEntity<Void> updateUser(
     @PathVariable Long userId,
     @Valid @RequestBody UserUpdateDto userUpdateDto

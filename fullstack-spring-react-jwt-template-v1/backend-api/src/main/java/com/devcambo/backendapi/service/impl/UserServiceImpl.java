@@ -72,6 +72,11 @@ public class UserServiceImpl implements UserService {
     );
   }
 
+  public boolean isOwner(Long userId, String email) {
+    User user = getUserById(userId);
+    return user.getEmail().equals(email);
+  }
+
   private User getUserById(Long userId) {
     return userRepository
       .findById(userId)

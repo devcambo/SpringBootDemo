@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +31,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -79,21 +77,23 @@ public class AuthServiceImpl implements AuthService {
       .findByEmail(forgotPwdDto.email())
       .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
-    Instant now = Instant.now();
+    if (user.getPasswordResetToken() != null) {
+      user.setPasswordResetToken(null);
+      userRepository.save(user);
+    }
+
     String token = generateToken(64);
     PwdResetToken pwdResetToken = new PwdResetToken();
     pwdResetToken.setToken(tokenHasher(token));
-    pwdResetToken.setTokenExpiry(now.plus(1, ChronoUnit.MINUTES));
+    pwdResetToken.setTokenExpiry(Instant.now().plus(1, ChronoUnit.MINUTES));
     user.setPasswordResetToken(pwdResetToken);
     userRepository.save(user);
 
-    String resetPwdLink = String.format(
-      "%s/reset-password?token=%s",
-      allowedOrigins.getFirst(),
-      token
+    emailService.send(
+      user.getEmail(),
+      "Reset password link",
+      String.format("%s/reset-password?token=%s", allowedOrigins.getFirst(), token)
     );
-    emailService.send(user.getEmail(), "Reset password link", resetPwdLink);
-    log.info("Reset password link generated: {}", resetPwdLink);
   }
 
   @Override
@@ -116,6 +116,7 @@ public class AuthServiceImpl implements AuthService {
       .findByPasswordResetToken(pwdResetToken)
       .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
     user.setPassword(encoder.encode(resetPwdDto.newPassword()));
+    user.setPasswordResetToken(null);
     userRepository.save(user);
   }
 
@@ -145,7 +146,6 @@ public class AuthServiceImpl implements AuthService {
   }
 
   private static boolean isTokenExpired(final Instant tokenExpiry) {
-    Instant now = Instant.now();
-    return tokenExpiry.isBefore(now); // 10.30 isBefore 10.20 -> false
+    return tokenExpiry.isBefore(Instant.now()); // 10.30 isBefore 10.20 -> false
   }
 }

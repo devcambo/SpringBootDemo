@@ -6,6 +6,7 @@ public record ProfileDto(
   Long id,
   String username,
   String email,
+  String profilePicture,
   String roles,
   Instant createdAt,
   Instant updatedAt

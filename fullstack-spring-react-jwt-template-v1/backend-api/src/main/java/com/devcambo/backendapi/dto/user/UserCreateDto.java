@@ -16,6 +16,9 @@ public record UserCreateDto(
   @UniqueEmail
   String email,
 
+  @Size(min = 3, max = 100, message = "Profile must be between 3 and 100 characters!")
+  String profilePicture,
+
   @NotEmpty(message = "Password is required!")
   @Size(min = 5, max = 100, message = "Password must be between 5 and 100 characters!")
   String password,

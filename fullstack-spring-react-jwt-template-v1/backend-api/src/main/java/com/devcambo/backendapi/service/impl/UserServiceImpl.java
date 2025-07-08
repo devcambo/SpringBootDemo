@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
   public void update(Long userId, UserUpdateDto userUpdateDto) {
     User existingUser = getUserById(userId);
     existingUser.setUsername(userUpdateDto.username());
+    existingUser.setProfilePicture(userUpdateDto.profilePicture());
     userRepository.save(existingUser);
   }
 
@@ -66,6 +67,7 @@ public class UserServiceImpl implements UserService {
       user.getId(),
       user.getUsername(),
       user.getEmail(),
+      user.getProfilePicture(),
       user.getRoles(),
       user.getCreatedAt(),
       user.getUpdatedAt()

@@ -2,6 +2,7 @@ package com.devcambo.backendapi.service.impl;
 
 import com.devcambo.backendapi.constant.AppConstants;
 import com.devcambo.backendapi.dto.file.FileDto;
+import com.devcambo.backendapi.exception.InvalidFileTypeException;
 import com.devcambo.backendapi.exception.ResourceNotFoundException;
 import com.devcambo.backendapi.service.StorageService;
 import io.awspring.cloud.s3.S3Resource;
@@ -21,6 +22,9 @@ public class StorageServiceImpl implements StorageService {
 
   @Override
   public FileDto save(final MultipartFile file) {
+    if (!isSupportedContentType(Objects.requireNonNull(file.getContentType()))) {
+      throw new InvalidFileTypeException("Only PNG or JPG or JPEG images are allowed");
+    }
     final var key = generateUniqueFileName(
       Objects.requireNonNull(file.getOriginalFilename())
     );
@@ -44,11 +48,19 @@ public class StorageServiceImpl implements StorageService {
     s3Template.deleteObject(AppConstants.S3_BUCKET_NAME, objectKey);
   }
 
-  private String generateUniqueFileName(String originalFileName) {
+  private static String generateUniqueFileName(String originalFileName) {
     return String.format(
       "%s%s",
       UUID.randomUUID().toString(),
       originalFileName.substring(originalFileName.lastIndexOf("."))
+    );
+  }
+
+  private static boolean isSupportedContentType(String contentType) {
+    return (
+      contentType.equals("image/png") ||
+      contentType.equals("image/jpg") ||
+      contentType.equals("image/jpeg")
     );
   }
 }

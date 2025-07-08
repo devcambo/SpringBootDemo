@@ -6,4 +6,5 @@ public class AppConstants {
   public static final String TOKEN_PREFIX = "Bearer ";
   public static final String ALPHABET =
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  public static final String S3_BUCKET_NAME = "my-bucket";
 }

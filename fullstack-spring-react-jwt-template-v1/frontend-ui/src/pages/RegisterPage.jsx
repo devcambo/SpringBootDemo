@@ -8,6 +8,10 @@ const RegisterPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (password !== confirmPassword) {
+      alert('Passwords do not match')
+      return
+    }
     console.log(username, email, password, confirmPassword)
   }
 

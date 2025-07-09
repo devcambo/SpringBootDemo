@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { registerUser } from '../context/auth/AuthActions'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('')
@@ -6,13 +8,34 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
       alert('Passwords do not match')
       return
     }
-    console.log(username, email, password, confirmPassword)
+    const user = {
+      username,
+      email,
+      password,
+    }
+    try {
+      await registerUser(user)
+      clearForm()
+      navigate('/login')
+    } catch (error) {
+      console.log(error)
+      return
+    }
+  }
+
+  const clearForm = () => {
+    setUsername('')
+    setEmail('')
+    setPassword('')
+    setConfirmPassword('')
   }
 
   return (

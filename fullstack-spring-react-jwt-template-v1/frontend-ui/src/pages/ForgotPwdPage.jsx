@@ -1,11 +1,25 @@
 import React, { useState } from 'react'
+import { forgotPassword } from '../context/auth/AuthActions'
+import { useNavigate } from 'react-router-dom'
 
 const ForgotPwdPage = () => {
   const [email, setEmail] = useState('')
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(email)
+    const userEmail = {
+      email,
+    }
+    try {
+      await forgotPassword(userEmail)
+      setEmail('')
+      navigate('/login')
+    } catch (error) {
+      console.log(error)
+      return
+    }
   }
 
   return (

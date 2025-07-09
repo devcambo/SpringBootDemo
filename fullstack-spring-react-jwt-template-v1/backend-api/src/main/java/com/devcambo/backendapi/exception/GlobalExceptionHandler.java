@@ -65,7 +65,6 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
   }
 
-  // code 401
   @ExceptionHandler(TokenExpiredException.class)
   public ResponseEntity<ErrorResponseDto> handleTokenExpiredException(
     TokenExpiredException exception,
@@ -74,13 +73,14 @@ public class GlobalExceptionHandler {
     log.error("An exception occurred due to : {}", exception.getMessage());
     ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
       webRequest.getDescription(false),
-      HttpStatus.UNAUTHORIZED,
+      HttpStatus.BAD_REQUEST,
       exception.getMessage(),
       LocalDateTime.now()
     );
-    return new ResponseEntity<>(errorResponseDTO, HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
   }
 
+  // code 401 -> change to 400
   @ExceptionHandler(UsernameNotFoundException.class)
   public ResponseEntity<ErrorResponseDto> handleUsernameNotFoundException(
     UsernameNotFoundException exception,

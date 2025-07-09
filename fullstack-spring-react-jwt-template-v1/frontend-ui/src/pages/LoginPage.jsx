@@ -1,7 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import AuthContext from '../context/auth/AuthContext'
+import { loginUser } from '../context/auth/AuthActions'
+import { useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
   const [inputs, setinputs] = useState({})
+
+  const { dispatch } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const name = e.target.name
@@ -9,9 +15,25 @@ const LoginPage = () => {
     setinputs((values) => ({ ...values, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(inputs)
+    const user = {
+      email: inputs.email,
+      password: inputs.password,
+    }
+    try {
+      const res = await loginUser(user)
+      dispatch({ type: 'LOGIN', payload: res.access_token })
+      clearForm()
+      navigate('/profile')
+    } catch (error) {
+      console.log(error)
+      return
+    }
+  }
+
+  const clearForm = () => {
+    setinputs({})
   }
 
   return (

@@ -11,9 +11,9 @@ const MainNavbar = () => {
       <br />
       <Link to='/login'>Login</Link>
       <br />
-      <Link to='/forgotpwd'>Forgot Password</Link>
+      <Link to='/forgot-password'>Forgot Password</Link>
       <br />
-      <Link to='/resetpwd'>Reset Password</Link>
+      <Link to='/reset-password'>Reset Password</Link>
       <br />
       <Link to='/profile'>Profile</Link>
       <br />

@@ -10,23 +10,26 @@ import AboutPage from './pages/AboutPage'
 import NotFoundPage from './pages/NotFoundPage'
 import MainNavbar from './components/MainNavbar'
 import MainFooter from './components/MainFooter'
+import { AuthProvider } from './context/auth/AuthContext'
 
 const App = () => {
   return (
-    <Router>
-      <MainNavbar />
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/forgotpwd' element={<ForgotPwdPage />} />
-        <Route path='/resetpwd' element={<ResetPwdPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/about' element={<AboutPage />} />
-        <Route path='*' element={<NotFoundPage />} />
-      </Routes>
-      <MainFooter />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <MainNavbar />
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/forgot-password' element={<ForgotPwdPage />} />
+          <Route path='/reset-password' element={<ResetPwdPage />} />
+          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/about' element={<AboutPage />} />
+          <Route path='*' element={<NotFoundPage />} />
+        </Routes>
+        <MainFooter />
+      </Router>
+    </AuthProvider>
   )
 }
 

@@ -9,3 +9,12 @@ export const findUserProfile = async () => {
     throw error
   }
 }
+
+// update user
+export const updateUser = async (userId, user) => {
+  try {
+    await apiClient.put(`/users/${userId}`, user)
+  } catch (error) {
+    throw error
+  }
+}

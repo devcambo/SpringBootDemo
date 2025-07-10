@@ -11,24 +11,30 @@ import NotFoundPage from './pages/NotFoundPage'
 import MainNavbar from './components/MainNavbar'
 import MainFooter from './components/MainFooter'
 import { AuthProvider } from './context/auth/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
+import { UserProvider } from './context/user/UserContext'
 
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
-        <MainNavbar />
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/forgot-password' element={<ForgotPwdPage />} />
-          <Route path='/reset-password' element={<ResetPwdPage />} />
-          <Route path='/profile' element={<ProfilePage />} />
-          <Route path='/about' element={<AboutPage />} />
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
-        <MainFooter />
-      </Router>
+      <UserProvider>
+        <Router>
+          <MainNavbar />
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/forgot-password' element={<ForgotPwdPage />} />
+            <Route path='/reset-password' element={<ResetPwdPage />} />
+            <Route path='/about' element={<AboutPage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path='/profile' element={<ProfilePage />} />
+            </Route>
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
+          <MainFooter />
+        </Router>
+      </UserProvider>
     </AuthProvider>
   )
 }

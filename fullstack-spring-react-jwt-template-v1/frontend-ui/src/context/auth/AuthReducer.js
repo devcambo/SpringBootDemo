@@ -6,6 +6,12 @@ const authReducer = (state, action) => {
         jwtToken: action.payload,
         isAuthenticated: true,
       }
+    case 'LOGOUT':
+      return {
+        ...state,
+        jwtToken: null,
+        isAuthenticated: false,
+      }
     default:
       return state
   }

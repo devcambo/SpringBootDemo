@@ -1,6 +1,5 @@
 package com.devcambo.backendapi.service.impl;
 
-import com.devcambo.backendapi.constant.AppConstants;
 import com.devcambo.backendapi.dto.file.FileDto;
 import com.devcambo.backendapi.exception.InvalidFileTypeException;
 import com.devcambo.backendapi.exception.ResourceNotFoundException;
@@ -11,6 +10,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageServiceImpl implements StorageService {
 
   private final S3Template s3Template;
+
+  @Value("${app.s3.bucket-name}")
+  private String bucketName;
 
   @Override
   public FileDto save(final MultipartFile file) {
@@ -30,7 +33,7 @@ public class StorageServiceImpl implements StorageService {
     );
     try {
       S3Resource upload = s3Template.upload(
-        AppConstants.S3_BUCKET_NAME,
+        bucketName,
         key,
         file.getInputStream()
       );
@@ -42,10 +45,10 @@ public class StorageServiceImpl implements StorageService {
 
   @Override
   public void delete(String objectKey) {
-    if (!s3Template.objectExists(AppConstants.S3_BUCKET_NAME, objectKey)) {
+    if (!s3Template.objectExists(bucketName, objectKey)) {
       throw new ResourceNotFoundException("File not found!");
     }
-    s3Template.deleteObject(AppConstants.S3_BUCKET_NAME, objectKey);
+    s3Template.deleteObject(bucketName, objectKey);
   }
 
   private static String generateUniqueFileName(String originalFileName) {
@@ -56,6 +59,7 @@ public class StorageServiceImpl implements StorageService {
     );
   }
 
+  // TODO: temporally solution
   private static boolean isSupportedContentType(String contentType) {
     return (
       contentType.equals("image/png") ||

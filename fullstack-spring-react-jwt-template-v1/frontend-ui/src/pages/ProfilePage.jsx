@@ -40,14 +40,9 @@ const ProfilePage = () => {
 
   const handleUploadFile = async () => {
     const data = new FormData()
-    data.append(
-			"file",
-			selectedFile,
-			selectedFile.name
-		);
-    console.log(data)
+    data.append('file', selectedFile)
     try {
-      await uploadFile(data)
+      return await uploadFile(data)
     } catch (error) {
       console.log(error)
       return
@@ -81,7 +76,16 @@ const ProfilePage = () => {
         <br />
         {/* Profile Picture */}
         <label htmlFor='profilePicture'>Profile Picture</label>
-        <img src={profile.profilePicture || 'abc.png'} alt='' /> <br />
+        {profile.profilePicture && (
+          <img
+            style={{ width: '150px', height: '150px' }}
+            src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${
+              profile.profilePicture
+            }`}
+            alt=''
+          />
+        )}
+        <br />
         <input
           type='file'
           name='profilePicture'

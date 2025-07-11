@@ -3,16 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import AuthContext from '../context/auth/AuthContext'
 
 const MainNavbar = () => {
-  const { dispatch } = useContext(AuthContext)
+  const { isAuthenticated, dispatch } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const handleLogout = (e) => {
     e.preventDefault()
-    console.log('Dispatching LOGOUT')
     dispatch({ type: 'LOGOUT' })
-    console.log('Navigating to /')
-    setTimeout(() => navigate('/'), 10) // temporary solution
-    console.log('Navigated to /')
+    setTimeout(() => navigate('/'), 0) // temporary solution
   }
 
   return (
@@ -28,11 +25,15 @@ const MainNavbar = () => {
       <br />
       <Link to='/reset-password'>Reset Password</Link>
       <br />
-      <Link to='/profile'>Profile</Link>
-      <br />
       <Link to='/about'>About</Link>
       <br />
-      <button onClick={handleLogout}>Logout</button>
+      {isAuthenticated && (
+        <div>
+          <Link to='/profile'>Profile</Link>
+          <br />
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      )}
       <hr />
     </div>
   )

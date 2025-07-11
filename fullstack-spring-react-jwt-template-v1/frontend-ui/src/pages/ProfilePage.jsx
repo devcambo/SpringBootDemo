@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { findUserProfile, updateUser } from '../context/user/UserActions'
+import { uploadFile } from '../context/file/FileActions'
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({})
+  const [selectedFile, setSelectedFile] = useState(null)
 
   const fetchUserProfile = async () => {
     try {
@@ -18,11 +20,14 @@ const ProfilePage = () => {
     fetchUserProfile()
   }, [])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    const uploaded = await handleUploadFile()
+    const fileName = uploaded.fileName
+    console.log(fileName)
     const user = {
       username: profile.username,
-      profilePicture: profile.profilePicture,
+      profilePicture: fileName,
     }
     try {
       updateUser(profile.id, user)
@@ -33,10 +38,27 @@ const ProfilePage = () => {
     }
   }
 
+  const handleUploadFile = async () => {
+    const data = new FormData()
+    data.append(
+			"file",
+			selectedFile,
+			selectedFile.name
+		);
+    console.log(data)
+    try {
+      await uploadFile(data)
+    } catch (error) {
+      console.log(error)
+      return
+    }
+  }
+
   return (
     <div>
       <h4>User Information</h4>
       <form onSubmit={handleSubmit}>
+        {/* Username */}
         <label htmlFor='username'>Username</label>
         <input
           type='text'
@@ -46,6 +68,7 @@ const ProfilePage = () => {
           onChange={(e) => setProfile({ ...profile, username: e.target.value })}
         />{' '}
         <br />
+        {/* Email */}
         <label htmlFor='email'>Email</label>
         <input
           type='email'
@@ -56,8 +79,16 @@ const ProfilePage = () => {
           onChange={(e) => setProfile({ ...profile, email: e.target.value })}
         />{' '}
         <br />
+        {/* Profile Picture */}
         <label htmlFor='profilePicture'>Profile Picture</label>
         <img src={profile.profilePicture || 'abc.png'} alt='' /> <br />
+        <input
+          type='file'
+          name='profilePicture'
+          id='profilePicture'
+          onChange={(e) => setSelectedFile(e.target.files[0])}
+        />
+        {/* Roles */}
         <label htmlFor='roles'>Roles</label>
         <input
           type='text'
@@ -68,6 +99,7 @@ const ProfilePage = () => {
           onChange={(e) => setProfile({ ...profile, roles: e.target.value })}
         />{' '}
         <br />
+        {/* Created At */}
         <label htmlFor='createdAt'>Created At</label>
         <input
           type='text'
@@ -80,6 +112,7 @@ const ProfilePage = () => {
           }
         />{' '}
         <br />
+        {/* Updated At */}
         <label htmlFor='updatedAt'>Updated At</label>
         <input
           type='text'
@@ -91,6 +124,7 @@ const ProfilePage = () => {
             setProfile({ ...profile, updatedAt: e.target.value })
           }
         />
+        {/* Submit */}
         <input type='submit' value='Update Profile' />
       </form>
     </div>
